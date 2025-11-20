@@ -1,0 +1,43 @@
+.library-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.games-section {
+  margin-top: 8px;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.filter-section h3 {
+  color: #969696;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* mantener estilos existentes para empty/loading */
+.empty-library {
+  text-align: center;
+  padding: 40px;
+  color: #8f98a0;
+}
+
+.empty-library h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.empty-library p {
+  font-size: 16px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  color: #8f98a0;
+}

@@ -1,0 +1,12 @@
+.review-form { display:flex; flex-direction:column; gap:12px; }
+.review-form .row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+label { display:flex; flex-direction:column; gap:6px; color:#9fb0c7; font-size:13px; }
+input, select, textarea { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); color: #eaf6ff; padding: 10px 12px; border-radius: 8px; outline: none; font-size:14px; }
+.review-form select { color:#eaf6ff; background: transparent; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px; }
+.review-form option { color:#0e1620; }
+textarea { min-height: 100px; }
+.checkbox { display:flex; align-items:center; gap:8px; }
+.form-actions { display:flex; justify-content:flex-end; gap:8px; }
+.btn-primary, .btn-secondary { padding:8px 12px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
+.btn-primary { background: linear-gradient(180deg,#66c0f4,#4b8fb6); color:#052034; }
+.btn-secondary { background: transparent; color:#a9bac8; border:1px solid rgba(255,255,255,0.03); }
