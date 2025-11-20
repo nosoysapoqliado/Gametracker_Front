@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import GameCard from '../components/cards/GameCard';
 import GameDetail from '../components/details/GameDetail';
 import GameReviewsModal from '../components/reviews/GameReviewsModal';
+import ConfirmationModal from '../components/common/ConfirmationModal';
 import { API_URL } from '../config/api';
 import './Library.css';
 
@@ -12,6 +13,12 @@ const Library = ({ refreshTrigger = 0, apiUrl = API_URL, onEditGame, searchTerm 
   const [selectedGame, setSelectedGame] = useState(null);
   const [reviewsGame, setReviewsGame] = useState(null);
   const [reviewsMode, setReviewsMode] = useState('list');
+
+  // Estado para el modal de confirmación
+  const [deleteConfirmation, setDeleteConfirmation] = useState({
+    isOpen: false,
+    gameId: null
+  });
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -44,16 +51,31 @@ const Library = ({ refreshTrigger = 0, apiUrl = API_URL, onEditGame, searchTerm 
     });
   }, [games, searchTerm]);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Eliminar juego?')) return;
+  const handleDeleteClick = (id) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      gameId: id
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    const id = deleteConfirmation.gameId;
+    if (!id) return;
+
     try {
       const res = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setGames(prev => prev.filter(g => (g._id || g.id) !== id));
+      setDeleteConfirmation({ isOpen: false, gameId: null });
     } catch (err) {
       console.error(err);
       setError('No se pudo eliminar el juego');
+      setDeleteConfirmation({ isOpen: false, gameId: null });
     }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmation({ isOpen: false, gameId: null });
   };
 
   const handleUpdate = (game) => {
@@ -116,7 +138,7 @@ const Library = ({ refreshTrigger = 0, apiUrl = API_URL, onEditGame, searchTerm 
                 key={game._id || game.id}
                 game={game}
                 onUpdate={handleUpdate}
-                onDelete={handleDelete}
+                onDelete={handleDeleteClick}
                 onOpen={handleOpenDetail}
                 onAddReview={handleAddReview}
                 onEditReview={handleEditReview}
@@ -139,6 +161,13 @@ const Library = ({ refreshTrigger = 0, apiUrl = API_URL, onEditGame, searchTerm 
       {reviewsGame && (
         <GameReviewsModal game={reviewsGame} mode={reviewsMode} onClose={handleCloseReviews} />
       )}
+
+      <ConfirmationModal
+        isOpen={deleteConfirmation.isOpen}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        message="¿Estás seguro de que quieres eliminar este juego? Esta acción no se puede deshacer."
+      />
     </div>
   );
 };
