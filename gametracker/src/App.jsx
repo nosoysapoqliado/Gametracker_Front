@@ -47,7 +47,7 @@ function App() {
             type="text"
             placeholder="Buscar juegos..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // <-- enlaza búsqueda
+            onChange={(e) => setSearchTerm(e.target.value)} // <--enlaza búsqueda
           />
         </div>
       </nav>
