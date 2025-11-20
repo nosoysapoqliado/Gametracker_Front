@@ -202,10 +202,13 @@ const GameForm = ({ onClose, onGameAdded, apiUrl, gameToEdit }) => {
               </div>
             </label>
 
-            <label className="checkbox-row">
-              <input type="checkbox" name="completado" checked={formData.completado} onChange={handleChange} />
-              <span>Completado</span>
-            </label>
+            <div className="completed-toggle-row">
+              <label className="toggle-switch">
+                <input type="checkbox" name="completado" checked={formData.completado} onChange={handleChange} />
+                <span className="slider"></span>
+              </label>
+              <span className="toggle-label">Marcar como Completado</span>
+            </div>
           </div>
 
           <div className="col-right">

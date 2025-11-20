@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { reviewService } from '../../services/reviewService';
 import ReviewForm from './ReviewForm';
+import ConfirmationModal from '../common/ConfirmationModal';
 import './GameReviewsModal.css';
 
 // mode: 'list' | 'add' | 'edit' | 'delete'
@@ -11,6 +12,12 @@ const GameReviewsModal = ({ game, mode = 'list', onClose }) => {
   const [error, setError] = useState('');
   const [activeMode, setActiveMode] = useState(mode);
   const [editingReview, setEditingReview] = useState(null);
+
+  // Estado para el modal de confirmación
+  const [deleteConfirmation, setDeleteConfirmation] = useState({
+    isOpen: false,
+    reviewId: null
+  });
 
   const loadReviews = async () => {
     if (!juegoId) return;
@@ -59,15 +66,30 @@ const GameReviewsModal = ({ game, mode = 'list', onClose }) => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Eliminar reseña?')) return;
+  const handleDeleteClick = (id) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      reviewId: id
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    const id = deleteConfirmation.reviewId;
+    if (!id) return;
+
     try {
       await reviewService.remove(id);
       await loadReviews();
+      setDeleteConfirmation({ isOpen: false, reviewId: null });
     } catch (err) {
       console.error(err);
       alert('No se pudo eliminar la reseña');
+      setDeleteConfirmation({ isOpen: false, reviewId: null });
     }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmation({ isOpen: false, reviewId: null });
   };
 
   return (
@@ -109,7 +131,7 @@ const GameReviewsModal = ({ game, mode = 'list', onClose }) => {
                       {r.textoResena && <p className="text">{r.textoResena}</p>}
                       <div className="item-actions">
                         <button className="btn-update" onClick={() => handleEditStart(r)}>Editar</button>
-                        <button className="btn-delete" onClick={() => handleDelete(r._id || r.id)}>Eliminar</button>
+                        <button className="btn-delete" onClick={() => handleDeleteClick(r._id || r.id)}>Eliminar</button>
                       </div>
                     </li>
                   ))}
@@ -126,6 +148,13 @@ const GameReviewsModal = ({ game, mode = 'list', onClose }) => {
           <button className="btn-secondary" onClick={onClose}>Cerrar</button>
         </footer>
       </div>
+
+      <ConfirmationModal
+        isOpen={deleteConfirmation.isOpen}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        message="¿Estás seguro de que quieres eliminar esta reseña? Esta acción no se puede deshacer."
+      />
     </div>
   );
 };
