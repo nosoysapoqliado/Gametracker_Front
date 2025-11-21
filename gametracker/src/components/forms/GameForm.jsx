@@ -3,8 +3,8 @@ import './GameForm.css';
 
 const isHttpUrl = (url) => /^https?:\/\//i.test(url);
 
-const GENRES = ['Acción', 'RPG', 'Aventura', 'Estrategia', 'Simulación', 'Deportes', 'Indie'];
-const PLATFORMS = ['PC', 'PlayStation', 'Xbox', 'Nintendo', 'Mobile', 'Switch'];
+const GENRES = ['Acción', 'RPG', 'Aventura', 'Estrategia', 'Simulación', 'Deportes', 'Indie','Terror','Multijugador','Puzle'];
+const PLATFORMS = ['PC', 'PlayStation', 'Xbox', 'Nintendo', 'Mobile', 'Switch','VR','Multiplataforma'];
 
 const GameForm = ({ onClose, onGameAdded, apiUrl, gameToEdit }) => {
   const [formData, setFormData] = useState({
